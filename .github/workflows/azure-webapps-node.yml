@@ -9,10 +9,18 @@ on:
     types: [opened, synchronize]
     branches:
       - main
+      - develop
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Display Branch Name on Push
+      run: |
+        echo "Branch Name: ${{ github.ref_name }}"
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
+          echo "This push was triggered by a merged Pull Request to ${{ github.ref_name }}!"
+        fi    
 
