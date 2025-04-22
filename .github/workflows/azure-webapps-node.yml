@@ -1,12 +1,13 @@
-# This workflow will build and push a node.js application to an Azure Web App when a commit is pushed to your default branch.
 name: Backend CICD => Agentcis-app
+
 on:
   push:
     branches:
-      - 'main'  # ignoring main branch, deployment will be done manually
+      - 'main' 
       - 'develop'
+
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, closed]
     branches:
       - main
       - develop
@@ -17,12 +18,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-
-    - name: Display Source Branch on Push via PR Merge
-      shell: /usr/bin/bash -e {0}
+    - name: Display Branch Info
       run: |
-        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
-          echo "This push was triggered by a merged Pull Request from ${{ github.event.pull_request.head.ref }} to ${{ github.ref_name }}!"
+        echo "Event Name: ${{ github.event_name }}"
+        echo "GitHub Ref Name: ${{ github.ref_name }}"
+
+        if [ "${{ github.event_name }}" = "pull_request" ] && [ "${{ github.event.action }}" = "closed" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
+          echo "✅ Pull Request was merged!"
+          echo "Source Branch (PR Head): ${{ github.event.pull_request.head.ref }}"
+          echo "Target Branch (PR Base): ${{ github.event.pull_request.base.ref }}"
         else
-          echo "Branch Name: ${{ github.ref_name }}"
+          echo "🔍 Not a merged PR to main — current branch: ${{ github.ref_name }}"
         fi
