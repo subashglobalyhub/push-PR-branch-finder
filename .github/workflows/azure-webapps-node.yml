@@ -1,0 +1,18 @@
+# This workflow will build and push a node.js application to an Azure Web App when a commit is pushed to your default branch.
+name: Backend CICD => Agentcis-app
+on:
+  push:
+    branches:
+      - 'main'  # ignoring main branch, deployment will be done manually
+      - 'develop'
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
