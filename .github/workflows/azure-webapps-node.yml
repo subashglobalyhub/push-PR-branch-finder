@@ -21,6 +21,8 @@ jobs:
       run: |
         echo "Branch Name: ${{ github.ref_name }}"
         if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
-          echo "This push was triggered by a merged Pull Request to ${{ github.ref_name }}!"
+          echo "This push was triggered by a merged Pull Request from ${{ github.event.pull_request.head.ref }} to ${{ github.ref_name }}!"
+        else
+          echo "Branch Name: ${{ github.ref_name }}"
         fi    
 
