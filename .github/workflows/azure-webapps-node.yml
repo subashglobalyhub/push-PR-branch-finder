@@ -17,12 +17,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Display Branch Name on Push
+
+    - name: Display Source Branch on Push via PR Merge
+      shell: /usr/bin/bash -e {0}
       run: |
-        echo "Branch Name: ${{ github.ref_name }}"
         if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.event.pull_request.merged }}" = "true" ]; then
           echo "This push was triggered by a merged Pull Request from ${{ github.event.pull_request.head.ref }} to ${{ github.ref_name }}!"
         else
           echo "Branch Name: ${{ github.ref_name }}"
-        fi    
-
+        fi
